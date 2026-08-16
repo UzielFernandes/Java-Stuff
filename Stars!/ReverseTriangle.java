@@ -14,27 +14,29 @@ public class ReverseTriangle{
         Structure(inputGiven);
     }
 
-    public static void Stars(int blankorstar, int longestSide, int starGiver) { //1,2,3,4 is its values
-        while(blankorstar != (longestSide+1)) {
-            if (blankorstar >= starGiver) {
+    public static void printStars(int state, int counter) { //to print stars given by the skeleton of printsquare
+        while (state!=0) {
+            if (state <= counter) {
                 System.out.print("*");
             } else {
                 System.out.print(" ");
-            }
-            blankorstar++;
+            }            
+            state--;
+            //System.out.print(counter);
         }
     }
 
-    public static void Structure(int longestSide) {
-        int starGiver = longestSide;
-        int blankorstar = 1;
+    public static void Structure(int inputGiven) { //method to, well, print the square (the structure)
+        int rows = inputGiven; //no of rows = input given
+        int counter = (inputGiven-inputGiven)+1;
 
-        while(blankorstar != (longestSide+1)) {
-            Stars(blankorstar,longestSide, starGiver);
+        while (rows != 0) {
+            int state = inputGiven; //as rows decreases by one each iteration, have state variable which holds input no permanently
+            printStars(state, counter); //send to print stars method
+            System.out.println(); //to leave a line after each row
 
-            blankorstar++;
-            System.out.println();
-        } 
+            counter++;
+            rows--;
+        }
     }
-
 }
