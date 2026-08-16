@@ -1,6 +1,7 @@
 //Reverse Triangle
 
 //blank blank star, blank star as you go on
+//Used square logic but replaced stars with blank space where not needed
 
 import java.util.Scanner;
 
@@ -28,7 +29,7 @@ public class ReverseTriangle{
 
     public static void Structure(int inputGiven) { //method to, well, print the square (the structure)
         int rows = inputGiven; //no of rows = input given
-        int counter = (inputGiven-inputGiven)+1;
+        int counter = 1; //to start frin bottom up to the input number
 
         while (rows != 0) {
             int state = inputGiven; //as rows decreases by one each iteration, have state variable which holds input no permanently
@@ -40,3 +41,31 @@ public class ReverseTriangle{
         }
     }
 }
+
+/*  ChatGPTs Approach (more decentralization)
+
+public static void printSpaces(int number) {
+    while (number != 0) {
+        System.out.print(" ");
+        number--;
+    }
+}
+
+public static void printStars(int number) {
+    while (number != 0) {
+        System.out.print("*");
+        number--;
+    }
+}
+
+public static void printTriangle(int size) {
+    int row = 1;
+
+    while (row <= size) {
+        printSpaces(size - row);
+        printStars(row);
+        System.out.println();
+
+        row++;
+    }
+} */
