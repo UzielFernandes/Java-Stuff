@@ -12,7 +12,7 @@ public class birdnerd {
         this.observations = 0;
     }
 
-    public static void addBird(Scanner sc, ArrayList<birdnerd> data) {   //declare in main and use here, not really necessary but when you have to use again in other functions that time youll understand aaaa
+    public static void addBird(Scanner sc, ArrayList<birdnerd> data,ArrayList<String> birdname) {   //declare in main and use here, not really necessary but when you have to use again in other functions that time youll understand aaaa
         System.out.println("Enter bird name: ");
         String birdName = sc.nextLine();
         System.out.println("Enter its latin name or some gibberish lol: ");
@@ -20,10 +20,33 @@ public class birdnerd {
 
         birdnerd newBird = new birdnerd(birdName, latinName);
         data.add(newBird);
+        birdname.add(birdName);
 
         System.out.println(data); //automatically naviates tostring metgid
+        System.out.println(birdname);
         
     }
+
+    public static void Searcher(ArrayList<birdnerd> data, ArrayList<String> birdname) {
+        int pass = 0;
+        Scanner key = new Scanner(System.in);
+
+        System.out.println("Enter birdy to be found: ");
+        String find = String.valueOf(key.nextLine());
+
+
+        for(int i = 0; i < data.size(); i++) {
+            if ((birdname.get(i).equals(find))) {
+                System.out.println(data.get(i));
+                pass = 1;
+                break;
+        }
+
+        if (pass == 0) {
+            System.out.println("your bird not found brother");
+        }
+            }   
+        }
 
     @Override 
     public String toString() {
@@ -32,6 +55,7 @@ public class birdnerd {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         ArrayList<birdnerd> data = new ArrayList<>();
+        ArrayList<String> birdname = new ArrayList<>();
 
         while (true) {
             System.out.println("""
@@ -45,7 +69,7 @@ public class birdnerd {
             int option = Integer.valueOf(sc.nextLine());
 
             if (option == 1) {
-                addBird(sc, data);
+                addBird(sc, data, birdname);
             }
 
             if (option == 2) { //for printing obdservations first make the search and then add the observation++ through the position of bird in array
@@ -57,7 +81,7 @@ public class birdnerd {
             }
 
             if (option == 4) {
-
+                Searcher(data, birdname);
             }
 
             if (option == 5) {
