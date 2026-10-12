@@ -22,30 +22,46 @@ public class birdnerd {
         data.add(newBird);
         birdname.add(birdName);
 
-        System.out.println(data); //automatically naviates tostring metgid
-        System.out.println(birdname);
-        
+        System.out.println(data); //automatically naviates tostring method
     }
 
-    public static void Searcher(ArrayList<birdnerd> data, ArrayList<String> birdname) {
+    public int getObservations(int observerPlus) {
+        this.observations += observerPlus;
+        return this.observations;
+    }
+
+    public String getBirdName() {
+        return this.name;
+    }
+
+    public static void Searcher(ArrayList<birdnerd> data, ArrayList<String> birdname, int searchPurpose, int observerPlus, Scanner sc) {
         int pass = 0;
-        Scanner key = new Scanner(System.in);
 
         System.out.println("Enter birdy to be found: ");
-        String find = String.valueOf(key.nextLine());
+        String find = String.valueOf(sc.nextLine());
 
 
         for(int i = 0; i < data.size(); i++) {
             if ((birdname.get(i).equals(find))) {
                 System.out.println(data.get(i));
                 pass = 1;
+
+                if(searchPurpose == 1) {
+                    System.out.println("how many " + data.get(i).getBirdName() + " did you see today? (0 for none) ");
+                    observerPlus = Integer.valueOf(sc.nextLine());
+
+                    System.out.println("here's your updated observations count for the bird " + data.get(i).getBirdName() + ": ");
+                    data.get(i).getObservations(observerPlus);
+                    System.out.println(data.get(i));    
+                }
                 break;
-        }
+            }
+        }   
 
         if (pass == 0) {
             System.out.println("your bird not found brother");
         }
-            }   
+
         }
 
     @Override 
@@ -56,6 +72,8 @@ public class birdnerd {
         Scanner sc = new Scanner(System.in);
         ArrayList<birdnerd> data = new ArrayList<>();
         ArrayList<String> birdname = new ArrayList<>();
+
+        int searchPurpose = 0; //if this is 0 search only prints else it adds to the observations
 
         while (true) {
             System.out.println("""
@@ -68,28 +86,24 @@ public class birdnerd {
 
             int option = Integer.valueOf(sc.nextLine());
 
-            if (option == 1) {
+            switch(option) {
+                        
+            case 1: 
                 addBird(sc, data, birdname);
-            }
+            
+            case 2:
+                Searcher(data, birdname, 1, 0, sc);
 
-            if (option == 2) { //for printing obdservations first make the search and then add the observation++ through the position of bird in array
-
-            }
-
-            if (option == 3) {
+            case 3:
                 System.out.println(data);
-            }
 
-            if (option == 4) {
-                Searcher(data, birdname);
-            }
+            case 4:
+                Searcher(data, birdname, 0, 0, sc);
 
-            if (option == 5) {
+            case 5:
                 break;
             }
         }
-        
-
     }
 }
 
