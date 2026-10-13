@@ -23,30 +23,130 @@ import java.util.*;
 
 public class DungeonCrawler {
 
-    public static void main(String[] args) {
-        char[][] MAP = {
-        {'#','#','#','#','#','#'},
-        {'#','_','_','_','_','#'},
-        {'#','_','_','_','_','#'},
-        {'#','_','_','_','_','#'},
-        {'#','_','_','_','_','#'},
-        {'#','_','_','_','_','#'},
-        {'#','#','#','#','#','#'}
-        };
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int xcoord = 1;
+        int ycoord = 5;
 
-        mapPrinter(MAP);
+        int wxCoord = 7;
+        int wyCoord = 0;
+        mapper(xcoord, ycoord, wxCoord, wyCoord);
+
     }
 
+    public static void mapper(int xcoord, int ycoord, int wxCoord, int wyCoord) {
+        Scanner sc = new Scanner(System.in);
+
+        char[][] MAP = {  //left to right xcoord, top to down ycoord
+        {'#','#','#','#','#','#','#','X','#'},
+        {'#','_','_','_','_','_','#','_','#'},
+        {'#','_','#','_','#','#','#','_','#'},
+        {'#','_','#','_','#','K','#','_','#'},
+        {'#','_','#','_','#','_','#','_','#'},
+        {'#','P','#','_','_','_','_','_','#'},
+        {'#','#','#','#','#','#','#','#','#'}
+        };
+
+        System.out.println('\n');
+
+        System.out.println(MAP[ycoord][xcoord] + "\n");
+        mapPrinter(MAP);
+
+        System.out.println("ARE YOU READYYY TO PLAYYY!!???? (0 for no): ");
+        int confirm = Integer.valueOf(sc.nextLine());
+
+        if(confirm == 0) {
+            System.out.println("bro?");
+        } else {
+            movePlayer(sc, MAP, ycoord, xcoord, wxCoord, wyCoord);
+        }
+    }
+
+
     public static void mapPrinter(char[][] MAP) {
-        for(int i = 0; i != 7; i++) {
-            for(int j = 0; j != 6; j++) {
-                if (j == 5) {
+        for(int i = 0; i != MAP.length; i++) {
+            for(int j = 0; j != MAP[0].length; j++) {
+                if (j == (MAP.length + 1)) {
                     System.out.print(MAP[i][j] + "\n");
                 } else {
-                    System.out.print(MAP[i][j] + " ");
+                    System.out.print(MAP[i][j] + "  ");
                 }
                 
             }
+        }
+    }
+
+    public static void movePlayer(Scanner sc, char[][] MAP, int ycoord, int xcoord, int wxCoord, int wyCoord) {
+
+        while (true) {
+            System.out.println("Press the movable characters: ");
+            char mover = sc.next().charAt(0);
+
+            if (ycoord == wyCoord && xcoord == wxCoord) {
+                System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                break;
+            }
+
+            if (mover == 'W' || mover == 'w') { //move up
+                
+                if (MAP[(ycoord-1)][xcoord] != '#') {
+                        MAP[ycoord][xcoord] = '_';
+                        ycoord--;
+                        MAP[ycoord][xcoord] = 'P';      
+                        
+                        mapPrinter(MAP);
+
+                } else {
+                    System.out.println("Uh Huh, youre hitting a wall \n");
+                }
+                               
+            } else if (mover == 'D' || mover == 'd') { //move right
+
+                if (MAP[(ycoord)][(xcoord+1)] != '#') {
+                        MAP[ycoord][xcoord] = '_';
+                        xcoord++;
+                        MAP[ycoord][xcoord] = 'P';      
+                        
+                        mapPrinter(MAP);
+
+                } else {
+                    System.out.println("Uh Huh, youre hitting a wall \n");
+                }
+
+            } else if (mover == 'A' || mover == 'a') { //move left
+
+                if (MAP[(ycoord)][(xcoord-1)] != '#') {
+                        MAP[ycoord][xcoord] = '_';
+                        xcoord--;
+                        MAP[ycoord][xcoord] = 'P';      
+                        
+                        mapPrinter(MAP);
+
+                } else {
+                    System.out.println("Uh Huh, youre hitting a wall \n");
+                }
+
+            } else if (mover == 'S' || mover == 's') { //move down
+
+                if (MAP[(ycoord+1)][(xcoord)] != '#') {
+                        MAP[ycoord][xcoord] = '_';
+                        ycoord++;
+                        MAP[ycoord][xcoord] = 'P';      
+                        
+                        mapPrinter(MAP);
+
+                } else {
+                    System.out.println("Uh Huh, youre hitting a wall \n");
+                }
+
+            } else if (mover == 'Q' || mover == 'q') {
+                System.out.println("Quitters Losers");
+                break;
+            } else {
+                System.out.println("Print something valid dear");
+            }
+
+
         }
     }
 }
