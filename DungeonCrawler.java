@@ -28,13 +28,17 @@ public class DungeonCrawler {
         int xcoord = 1;
         int ycoord = 5;
 
-        int wxCoord = 7;
-        int wyCoord = 0;
-        mapper(xcoord, ycoord, wxCoord, wyCoord);
+        int KAcquired = 0;
+        int Wineh = 0;
+
+        int newy = ycoord;
+        int newx = xcoord;
+
+        mapper(xcoord, ycoord, KAcquired, Wineh, newy, newx);
 
     }
 
-    public static void mapper(int xcoord, int ycoord, int wxCoord, int wyCoord) {
+    public static void mapper(int xcoord, int ycoord, int KAcquired, int Wineh, int newy, int newx) {
         Scanner sc = new Scanner(System.in);
 
         char[][] MAP = {  //left to right xcoord, top to down ycoord
@@ -58,7 +62,7 @@ public class DungeonCrawler {
         if(confirm == 0) {
             System.out.println("bro?");
         } else {
-            movePlayer(sc, MAP, ycoord, xcoord, wxCoord, wyCoord);
+            movePlayer(sc, MAP, ycoord, xcoord,KAcquired, Wineh, newy, newx);
         }
     }
 
@@ -76,25 +80,52 @@ public class DungeonCrawler {
         }
     }
 
-    public static void movePlayer(Scanner sc, char[][] MAP, int ycoord, int xcoord, int wxCoord, int wyCoord) {
+    public static int Winning(int KAcquired, int ycoord, int xcoord, char[][] MAP, int Wineh) {
+        System.out.println(ycoord + "" + xcoord);//
+        
+        if (KAcquired == 1) { //WHY IS THIS MOETHOD NOT EXECUTINGGGGGGGG
+                System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                return 1;
+        } else {
+                System.out.println("You've yet to get the key man!");
+                MAP[ycoord][xcoord] = 'X';
+                return 0;
+        }
+    }
+
+    public static void movePlayer(Scanner sc, char[][] MAP, int ycoord, int xcoord, int KAcquired, int Wineh, int newy, int newx) {
 
         while (true) {
+
             System.out.println("Press the movable characters: ");
             char mover = sc.next().charAt(0);
 
-            if (ycoord == wyCoord && xcoord == wxCoord) {
-                System.out.println("YOU WIN THE GAMEE!!!!!!!");
-                break;
-            }
+            char whatThere = MAP[ycoord][xcoord];
+
+            System.out.println(KAcquired); //
+            System.out.println("the char: " + whatThere + " at coords: "+ ycoord  + "" + xcoord);
 
             if (mover == 'W' || mover == 'w') { //move up
                 
                 if (MAP[(ycoord-1)][xcoord] != '#') {
-                        MAP[ycoord][xcoord] = '_';
-                        ycoord--;
-                        MAP[ycoord][xcoord] = 'P';      
-                        
-                        mapPrinter(MAP);
+
+                    if (MAP[(ycoord-1)][xcoord] == 'K') {
+                        KAcquired = 1;
+                    }
+
+                    if (MAP[(ycoord-1)][xcoord] == 'X' && KAcquired == 1) { 
+                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        break;
+                    } else if (MAP[(ycoord-1)][xcoord] == 'X' && KAcquired == 0){
+                        System.out.println("You've yet to get the key man!");
+                        MAP[ycoord+1][xcoord] = 'X';
+                    }
+
+                    MAP[ycoord][xcoord] = '_';
+                    ycoord--;
+                    MAP[ycoord][xcoord] = 'P';      
+                    
+                    mapPrinter(MAP);
 
                 } else {
                     System.out.println("Uh Huh, youre hitting a wall \n");
@@ -103,11 +134,25 @@ public class DungeonCrawler {
             } else if (mover == 'D' || mover == 'd') { //move right
 
                 if (MAP[(ycoord)][(xcoord+1)] != '#') {
-                        MAP[ycoord][xcoord] = '_';
-                        xcoord++;
-                        MAP[ycoord][xcoord] = 'P';      
-                        
-                        mapPrinter(MAP);
+
+                    if (MAP[(ycoord)][xcoord+1] == 'K') {
+                        KAcquired = 1;
+                    }
+
+                    MAP[ycoord][xcoord] = '_';
+
+                    if (MAP[(ycoord)][xcoord+1] == 'X' && KAcquired == 1) { 
+                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        break;
+                    } else if (MAP[(ycoord)][xcoord+1] == 'X' && KAcquired == 0){
+                        System.out.println("You've yet to get the key man!");
+                        MAP[ycoord][xcoord] = 'X';
+                    }
+
+                    xcoord++;
+                    MAP[ycoord][xcoord] = 'P';      
+                    
+                    mapPrinter(MAP);
 
                 } else {
                     System.out.println("Uh Huh, youre hitting a wall \n");
@@ -116,11 +161,25 @@ public class DungeonCrawler {
             } else if (mover == 'A' || mover == 'a') { //move left
 
                 if (MAP[(ycoord)][(xcoord-1)] != '#') {
-                        MAP[ycoord][xcoord] = '_';
-                        xcoord--;
-                        MAP[ycoord][xcoord] = 'P';      
-                        
-                        mapPrinter(MAP);
+
+                    if (MAP[(ycoord)][xcoord-1] == 'K') {
+                        KAcquired = 1;
+                    }
+
+                    MAP[ycoord][xcoord] = '_';
+
+                    if (MAP[(ycoord)][xcoord-1] == 'X' && KAcquired == 1) { 
+                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        break;
+                    } else if (MAP[(ycoord)][xcoord-1] == 'X' && KAcquired == 0){
+                        System.out.println("You've yet to get the key man!");
+                        MAP[ycoord][xcoord] = 'X';
+                    }
+
+                    xcoord--;
+                    MAP[ycoord][xcoord] = 'P';      
+                    
+                    mapPrinter(MAP);
 
                 } else {
                     System.out.println("Uh Huh, youre hitting a wall \n");
@@ -129,7 +188,21 @@ public class DungeonCrawler {
             } else if (mover == 'S' || mover == 's') { //move down
 
                 if (MAP[(ycoord+1)][(xcoord)] != '#') {
-                        MAP[ycoord][xcoord] = '_';
+
+                    if (MAP[(ycoord+1)][xcoord] == 'K') {
+                        KAcquired = 1;
+                    }
+
+                    MAP[ycoord][xcoord] = '_';
+
+                    if (MAP[(ycoord+1)][xcoord] == 'X' && KAcquired == 1) { 
+                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        break;
+                    } else if (MAP[(ycoord+1)][xcoord] == 'X' && KAcquired == 0){
+                        System.out.println("You've yet to get the key man!");
+                        MAP[ycoord][xcoord] = 'X';
+                    }
+
                         ycoord++;
                         MAP[ycoord][xcoord] = 'P';      
                         
@@ -142,6 +215,7 @@ public class DungeonCrawler {
             } else if (mover == 'Q' || mover == 'q') {
                 System.out.println("Quitters Losers");
                 break;
+
             } else {
                 System.out.println("Print something valid dear");
             }
