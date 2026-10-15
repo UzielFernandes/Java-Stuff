@@ -1,3 +1,4 @@
+
 /*DUNGEON CRAWLER!!!!: A CAPSTONE PROJECH BEFORE CS TAKES ME
 
 CORE IDEA:
@@ -13,7 +14,6 @@ inputs w (move north), the index value of the row while increase by provided the
 
 FEATURES TO ADD (EXPANDABLE):
 i. Mobs: but instead of having to fight you have to generate immunity to face them
-ii. Immunity: gathered by roaming through the map and finding certain collectibles
 iii. Treasure: collect a nice treasure - can add a purpose to it later
 iv. Key: find the key so that the player can truly exit
 
@@ -22,11 +22,15 @@ abilities? more maps?*/
 import java.util.*;
 
 public class DungeonCrawler {
-
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
+
+        int Mhealth = 5;
+        int Phealth = 10;
+        int Steps = 0;
+
         int xcoord = 1;
-        int ycoord = 5;
+        int ycoord = 1;
 
         int KAcquired = 0;
         int Wineh = 0;
@@ -34,24 +38,31 @@ public class DungeonCrawler {
         int newy = ycoord;
         int newx = xcoord;
 
-        mapper(xcoord, ycoord, KAcquired, Wineh, newy, newx);
-
+        mapper(xcoord, ycoord, KAcquired, Wineh, newy, newx, Mhealth, Phealth, Steps);
     }
 
-    public static void mapper(int xcoord, int ycoord, int KAcquired, int Wineh, int newy, int newx) {
+    public static void mapper(int xcoord, int ycoord, int KAcquired, int Wineh, int newy, int newx, int Mhealth, int Phealth, int Steps) {
         Scanner sc = new Scanner(System.in);
 
-        char[][] MAP = {  //left to right xcoord, top to down ycoord
-        {'#','#','#','#','#','#','#','X','#'},
-        {'#','_','_','_','_','_','#','_','#'},
-        {'#','_','#','_','#','#','#','_','#'},
-        {'#','_','#','_','#','K','#','_','#'},
-        {'#','_','#','_','#','_','#','_','#'},
-        {'#','P','#','_','_','_','_','_','#'},
-        {'#','#','#','#','#','#','#','#','#'}
+        char[][] MAP = {  //left to right xcoord, top to down ycoord //11,6
+            {'#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
+            {'#','P','#','_','_','_','#','_','_','_','#','_','_','#'},
+            {'#','_','#','_','_','_','#','#','#','_','#','_','_','#'},
+            {'#','_','#','_','_','M','_','_','#','_','#','_','_','#'},
+            {'#','_','#','_','_','_','#','_','#','_','#','#','_','X'},
+            {'#','_','#','#','#','_','#','_','#','_','_','#','_','#'},
+            {'#','_','_','_','#','_','#','_','#','T','_','#','_','#'},
+            {'#','_','#','#','#','_','#','_','#','_','_','#','_','#'},
+            {'#','_','#','_','_','_','#','_','#','#','#','#','_','#'},
+            {'#','_','#','_','#','#','#','_','_','_','_','#','_','#'},
+            {'#','_','#','_','#','_','#','_','#','#','_','#','_','#'},
+            {'#','_','#','_','#','_','#','_','#','_','_','#','_','#'},
+            {'#','_','#','_','#','#','#','_','#','_','#','#','_','#'},
+            {'#','_','_','_','_','_','#','_','#','_','#','_','_','#'},
+            {'#','_','#','#','#','_','#','_','#','_','#','_','_','#'},
+            {'#','_','#','_','_','_','#','K','#','_','_','_','_','#'},
+            {'#','#','#','#','#','#','#','#','#','#','#','#','#','#'}
         };
-
-        System.out.println('\n');
 
         System.out.println(MAP[ycoord][xcoord] + "\n");
         mapPrinter(MAP);
@@ -59,157 +70,246 @@ public class DungeonCrawler {
         System.out.println("ARE YOU READYYY TO PLAYYY!!???? (0 for no): ");
         int confirm = Integer.valueOf(sc.nextLine());
 
-        if(confirm == 0) {
+        if (confirm == 0) {
             System.out.println("bro?");
         } else {
-            movePlayer(sc, MAP, ycoord, xcoord,KAcquired, Wineh, newy, newx);
+            System.out.println("All the best! (The monster has " + Mhealth + " health points btw, avoid hitting walls to not drop you health in the process");
+            System.out.println("To obtain the treasure, have atleast 8 health, acquire the key and reach the exit with the least steps as possible");
+            movePlayer(sc, MAP, ycoord, xcoord, KAcquired, Wineh, newy, newx, Mhealth, Phealth, Steps);
         }
     }
 
-
     public static void mapPrinter(char[][] MAP) {
-        for(int i = 0; i != MAP.length; i++) {
-            for(int j = 0; j != MAP[0].length; j++) {
-                if (j == (MAP.length + 1)) {
-                    System.out.print(MAP[i][j] + "\n");
-                } else {
-                    System.out.print(MAP[i][j] + "  ");
-                }
-                
+        System.out.println("\n");
+
+        for (int i = 0; i < MAP.length; i++) {
+            for (int j = 0; j < MAP[i].length; j++) {
+                System.out.print(MAP[i][j] + " ");
             }
+            System.out.println();
         }
     }
 
     public static int Winning(int KAcquired, int ycoord, int xcoord, char[][] MAP, int Wineh) {
         System.out.println(ycoord + "" + xcoord);//
-        
-        if (KAcquired == 1) { //WHY IS THIS MOETHOD NOT EXECUTINGGGGGGGG
-                System.out.println("YOU WIN THE GAMEE!!!!!!!");
-                return 1;
+
+        if (KAcquired == 1) {
+            System.out.println("YOU WIN THE GAMEE!!!!!!!");
+            return 1;
         } else {
-                System.out.println("You've yet to get the key man!");
-                MAP[ycoord][xcoord] = 'X';
-                return 0;
+            System.out.println("You've yet to get the key man!");
+            MAP[ycoord][xcoord] = 'X';
+            return 0;
         }
     }
 
-    public static void movePlayer(Scanner sc, char[][] MAP, int ycoord, int xcoord, int KAcquired, int Wineh, int newy, int newx) {
+    public static void movePlayer(Scanner sc, char[][] MAP, int ycoord, int xcoord, int KAcquired, int Wineh, int newy, int newx, int Mhealth, int Phealth, int Steps) {
+
+        String TC = "NO";
 
         while (true) {
 
             System.out.println("Press the movable characters: ");
             char mover = sc.next().charAt(0);
 
-            char whatThere = MAP[ycoord][xcoord];
+            if(Phealth <= 0) {
+                System.out.println("You ran out of health dear");
+                break;
+            }
 
-            System.out.println(KAcquired); //
-            System.out.println("the char: " + whatThere + " at coords: "+ ycoord  + "" + xcoord);
+            if((Steps <= 68 && Phealth >= 8 && KAcquired == 1) || TC.equals("YES!")) {
+                MAP[6][11] = '_';
+            } else if(Steps > 68 || Phealth < 8 || KAcquired != 1) {
+                MAP[6][11] = '#';
+            }  
 
             if (mover == 'W' || mover == 'w') { //move up
-                
+
                 if (MAP[(ycoord-1)][xcoord] != '#') {
 
                     if (MAP[(ycoord-1)][xcoord] == 'K') {
                         KAcquired = 1;
                     }
 
-                    if (MAP[(ycoord-1)][xcoord] == 'X' && KAcquired == 1) { 
+                    if (MAP[(ycoord-1)][xcoord] == 'M') {
+                        if (Mhealth >= Phealth) {
+                            System.out.println("You couldn't defeat the monster :(");
+                            break;
+                        } else {
+                            System.out.println("YOOOO YOU DEFEATED THE MONSTER!!!!");
+                        }
+                    }
+
+                    if (MAP[(ycoord-1)][xcoord] == 'T') {
+                        System.out.println("YOU ACQUIRED THE TREASUREEEE!!!!!!");
+                        TC = "YES!";
+                    }
+
+                    if (MAP[(ycoord-1)][xcoord] == 'X' && KAcquired == 1) {
                         System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        System.out.println("Final Stats: ");
+                        System.out.println("Steps taken: " + Steps);
+                        System.out.println("Final Health: " + Phealth);
+                        System.out.println("Treasure Acquired: " + TC);
                         break;
-                    } else if (MAP[(ycoord-1)][xcoord] == 'X' && KAcquired == 0){
+
+                    } else if (MAP[(ycoord-1)][xcoord] == 'X' && KAcquired == 0) {
                         System.out.println("You've yet to get the key man!");
-                        MAP[ycoord+1][xcoord] = 'X';
+                        continue;
                     }
 
                     MAP[ycoord][xcoord] = '_';
                     ycoord--;
-                    MAP[ycoord][xcoord] = 'P';      
-                    
+                    MAP[ycoord][xcoord] = 'P';
+                    Steps++;
+
                     mapPrinter(MAP);
 
                 } else {
-                    System.out.println("Uh Huh, youre hitting a wall \n");
+                    System.out.println("Uh Huh, youre hitting a wall AND your health is: " + Phealth-- + "\n");
                 }
-                               
+
             } else if (mover == 'D' || mover == 'd') { //move right
 
-                if (MAP[(ycoord)][(xcoord+1)] != '#') {
+                if (MAP[ycoord][xcoord+1] != '#') {
 
-                    if (MAP[(ycoord)][xcoord+1] == 'K') {
+                    if (MAP[ycoord][xcoord+1] == 'K') {
                         KAcquired = 1;
+                    }
+
+                    if (MAP[(ycoord)][xcoord+1] == 'M') {
+                        if (Mhealth >= Phealth) {
+                            System.out.println("You couldn't defeat the monster :(");
+                            break;
+                        } else {
+                            System.out.println("YOOOO YOU DEFEATED THE MONSTER!!!!");
+                        }
+                    }
+
+                    if (MAP[(ycoord)][xcoord+1] == 'T') {
+                        System.out.println("YOU ACQUIRED THE TREASUREEEE!!!!!!");
+                        TC = "YES!";
                     }
 
                     MAP[ycoord][xcoord] = '_';
 
-                    if (MAP[(ycoord)][xcoord+1] == 'X' && KAcquired == 1) { 
+                    if (MAP[ycoord][xcoord+1] == 'X' && KAcquired == 1) {
                         System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        System.out.println("Final Stats: ");
+                        System.out.println("Steps taken: " + Steps);
+                        System.out.println("Final Health: " + Phealth);
+                        System.out.println("Treasure Acquired: " + TC);
                         break;
-                    } else if (MAP[(ycoord)][xcoord+1] == 'X' && KAcquired == 0){
+
+                    } else if (MAP[ycoord][xcoord+1] == 'X' && KAcquired == 0) {
                         System.out.println("You've yet to get the key man!");
-                        MAP[ycoord][xcoord] = 'X';
+                        continue;
                     }
 
                     xcoord++;
-                    MAP[ycoord][xcoord] = 'P';      
-                    
+                    MAP[ycoord][xcoord] = 'P';
+                    Steps++;
+
                     mapPrinter(MAP);
 
                 } else {
-                    System.out.println("Uh Huh, youre hitting a wall \n");
+                   System.out.println("Uh Huh, youre hitting a wall AND your health is: " + Phealth-- + "\n");
                 }
 
             } else if (mover == 'A' || mover == 'a') { //move left
 
-                if (MAP[(ycoord)][(xcoord-1)] != '#') {
+                if (MAP[ycoord][xcoord-1] != '#') {
 
-                    if (MAP[(ycoord)][xcoord-1] == 'K') {
+                    if (MAP[ycoord][xcoord-1] == 'K') {
                         KAcquired = 1;
+                    }
+
+                    if (MAP[(ycoord)][xcoord-1] == 'M') {
+                        if (Mhealth >= Phealth) {
+                            System.out.println("You couldn't defeat the monster :(");
+                            break;
+                        } else {
+                            System.out.println("YOOOO YOU DEFEATED THE MONSTER!!!!");
+                        }
+                    }
+
+                    if (MAP[(ycoord)][xcoord-1] == 'T') {
+                        System.out.println("YOU ACQUIRED THE TREASUREEEE!!!!!!");
+                        TC = "YES!";
                     }
 
                     MAP[ycoord][xcoord] = '_';
 
-                    if (MAP[(ycoord)][xcoord-1] == 'X' && KAcquired == 1) { 
+                    if (MAP[ycoord][xcoord-1] == 'X' && KAcquired == 1) {
                         System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        System.out.println("Final Stats: ");
+                        System.out.println("Steps taken: " + Steps);
+                        System.out.println("Final Health: " + Phealth);
+                        System.out.println("Treasure Acquired: " + TC);
                         break;
-                    } else if (MAP[(ycoord)][xcoord-1] == 'X' && KAcquired == 0){
+
+                    } else if (MAP[ycoord][xcoord-1] == 'X' && KAcquired == 0) {
                         System.out.println("You've yet to get the key man!");
-                        MAP[ycoord][xcoord] = 'X';
+                        continue;
                     }
 
                     xcoord--;
-                    MAP[ycoord][xcoord] = 'P';      
-                    
+                    MAP[ycoord][xcoord] = 'P';
+                    Steps++;
+
                     mapPrinter(MAP);
 
                 } else {
-                    System.out.println("Uh Huh, youre hitting a wall \n");
+                    System.out.println("Uh Huh, youre hitting a wall AND your health is: " + Phealth-- + "\n");
                 }
 
             } else if (mover == 'S' || mover == 's') { //move down
 
-                if (MAP[(ycoord+1)][(xcoord)] != '#') {
+                if (MAP[ycoord+1][xcoord] != '#') {
 
-                    if (MAP[(ycoord+1)][xcoord] == 'K') {
+                    if (MAP[ycoord+1][xcoord] == 'K') {
                         KAcquired = 1;
+                    }
+
+                    if (MAP[(ycoord+1)][xcoord] == 'M') {
+                        if (Mhealth >= Phealth) {
+                            System.out.println("You couldn't defeat the monster :(");
+                            break;
+                        } else {
+                            System.out.println("YOOOO YOU DEFEATED THE MONSTER!!!!");
+                        }
+                    }
+
+                    if (MAP[(ycoord+1)][xcoord] == 'T') {
+                        System.out.println("YOU ACQUIRED THE TREASUREEEE!!!!!!");
+                        TC = "YES!";
                     }
 
                     MAP[ycoord][xcoord] = '_';
 
-                    if (MAP[(ycoord+1)][xcoord] == 'X' && KAcquired == 1) { 
+                    if (MAP[ycoord+1][xcoord] == 'X' && KAcquired == 1) {
                         System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
+                        System.out.println("Final Stats: ");
+                        System.out.println("Steps taken: " + Steps);
+                        System.out.println("Final Health: " + Phealth);
+                        System.out.println("Treasure Acquired: " + TC);
                         break;
-                    } else if (MAP[(ycoord+1)][xcoord] == 'X' && KAcquired == 0){
+
+                    } else if (MAP[ycoord+1][xcoord] == 'X' && KAcquired == 0) {
                         System.out.println("You've yet to get the key man!");
-                        MAP[ycoord][xcoord] = 'X';
+                        continue;
                     }
 
-                        ycoord++;
-                        MAP[ycoord][xcoord] = 'P';      
-                        
-                        mapPrinter(MAP);
+                    ycoord++;
+                    MAP[ycoord][xcoord] = 'P';
+                    Steps++;
+
+                    mapPrinter(MAP);
 
                 } else {
-                    System.out.println("Uh Huh, youre hitting a wall \n");
+                    System.out.println("Uh Huh, youre hitting a wall AND your health is: " + Phealth-- + "\n");
                 }
 
             } else if (mover == 'Q' || mover == 'q') {
@@ -219,8 +319,6 @@ public class DungeonCrawler {
             } else {
                 System.out.println("Print something valid dear");
             }
-
-
         }
     }
 }
