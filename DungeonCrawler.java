@@ -20,6 +20,8 @@ iv. Key: find the key so that the player can truly exit
 abilities? more maps?*/
 
 import java.util.*;
+import java.nio.file.Paths;
+import java.io.FileWriter;
 
 public class DungeonCrawler {
     public static void main(String args[]) {
@@ -67,11 +69,23 @@ public class DungeonCrawler {
         System.out.println(MAP[ycoord][xcoord] + "\n");
         mapPrinter(MAP);
 
-        System.out.println("ARE YOU READYYY TO PLAYYY!!???? (0 for no): ");
+        System.out.println("ARE YOU READYYY TO PLAYYY!!???? (0 for no, 1 to view scores, any other integer to play): ");
         int confirm = Integer.valueOf(sc.nextLine());
 
         if (confirm == 0) {
             System.out.println("bro?");
+
+        } else if (confirm == 1) {
+            try {
+                Scanner lines = new Scanner(Paths.get("DungeonCrawler.txt"));
+                while (lines.hasNextLine()) {
+                    String row = lines.nextLine();
+                    System.out.println(row);
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR!");
+            }
+
         } else {
             System.out.println("All the best! (The monster has " + Mhealth + " health points btw, avoid hitting walls to not drop you health in the process");
             System.out.println("To obtain the treasure, have atleast 8 health, acquire the key and reach the exit with the least steps as possible");
@@ -100,6 +114,27 @@ public class DungeonCrawler {
             System.out.println("You've yet to get the key man!");
             MAP[ycoord][xcoord] = 'X';
             return 0;
+        }
+    }
+
+    public static void WinCase(int Steps, int Phealth, String TC) {
+        System.out.println("YOU WIN THE GAMEE!!!!!!!");
+        System.out.println("Final Stats: ");
+        System.out.println("Steps taken: " + Steps);
+        System.out.println("Final Health: " + Phealth);
+        System.out.println("Treasure Acquired: " + TC);
+
+        try {
+            FileWriter writing = new FileWriter("DungeonCrawler.txt", true);
+            writing.write("\n" +"Stats \n");
+            writing.write("Steps taken: " + Steps + "\n");
+            writing.write("Final Health: " + Phealth + "\n");
+            writing.write("Treasure Acquired: " + TC + "\n");
+
+            writing.close();
+
+        } catch (Exception e) {
+            System.out.println("ERROR!!!!");
         }
     }
 
@@ -146,11 +181,7 @@ public class DungeonCrawler {
                     }
 
                     if (MAP[(ycoord-1)][xcoord] == 'X' && KAcquired == 1) {
-                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
-                        System.out.println("Final Stats: ");
-                        System.out.println("Steps taken: " + Steps);
-                        System.out.println("Final Health: " + Phealth);
-                        System.out.println("Treasure Acquired: " + TC);
+                        WinCase(Steps, Phealth, TC);
                         break;
 
                     } else if (MAP[(ycoord-1)][xcoord] == 'X' && KAcquired == 0) {
@@ -194,11 +225,7 @@ public class DungeonCrawler {
                     MAP[ycoord][xcoord] = '_';
 
                     if (MAP[ycoord][xcoord+1] == 'X' && KAcquired == 1) {
-                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
-                        System.out.println("Final Stats: ");
-                        System.out.println("Steps taken: " + Steps);
-                        System.out.println("Final Health: " + Phealth);
-                        System.out.println("Treasure Acquired: " + TC);
+                        WinCase(Steps, Phealth, TC);
                         break;
 
                     } else if (MAP[ycoord][xcoord+1] == 'X' && KAcquired == 0) {
@@ -241,12 +268,7 @@ public class DungeonCrawler {
                     MAP[ycoord][xcoord] = '_';
 
                     if (MAP[ycoord][xcoord-1] == 'X' && KAcquired == 1) {
-                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
-                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
-                        System.out.println("Final Stats: ");
-                        System.out.println("Steps taken: " + Steps);
-                        System.out.println("Final Health: " + Phealth);
-                        System.out.println("Treasure Acquired: " + TC);
+                        WinCase(Steps, Phealth, TC);
                         break;
 
                     } else if (MAP[ycoord][xcoord-1] == 'X' && KAcquired == 0) {
@@ -289,12 +311,7 @@ public class DungeonCrawler {
                     MAP[ycoord][xcoord] = '_';
 
                     if (MAP[ycoord+1][xcoord] == 'X' && KAcquired == 1) {
-                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
-                        System.out.println("YOU WIN THE GAMEE!!!!!!!");
-                        System.out.println("Final Stats: ");
-                        System.out.println("Steps taken: " + Steps);
-                        System.out.println("Final Health: " + Phealth);
-                        System.out.println("Treasure Acquired: " + TC);
+                        WinCase(Steps, Phealth, TC);
                         break;
 
                     } else if (MAP[ycoord+1][xcoord] == 'X' && KAcquired == 0) {
