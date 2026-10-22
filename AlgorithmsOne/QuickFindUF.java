@@ -29,26 +29,30 @@ public class QuickFindUF {
         }
     }
 
-    public static void main(String[] args) { //main method
-        Scanner sc = new Scanner(System.in);
+    
+        public static void main(String[] args) { //main method
+            Scanner sc = new Scanner(System.in);
 
-        System.out.println("Enter No of Nos: ");
-        int N = sc.nextInt();
-        QuickFindUF uf = new QuickFindUF(N);
+            System.out.println("Enter No of Nos: ");
+            int N = sc.nextInt();
+            QuickFindUF uf = new QuickFindUF(N);
 
-        while (sc.hasNextInt()) {
-            System.out.println("Enter first No to operate: ");
-            int p = sc.nextInt();
+            while (true) {
+                System.out.println("Enter first No to operate: ");
+                int p = sc.nextInt();
 
-            System.out.println("Enter second No to operate: ");
-            int q = sc.nextInt();
+                System.out.println("Enter second No to operate: ");
+                int q = sc.nextInt();
 
-            if (!uf.Find(p, q)) { //check if already connected
-                uf.Union(p, q); //if not connect em by calling that method
-                System.out.println(p + " " + q); //whatever this prints, it indicates that we have a brand new connnection!!
+                if (!uf.Find(p, q)) { //check if already connected
+                    uf.Union(p, q); //if not connect em by calling that method
+                    System.out.println("connected elements: " + p + " " + q); //whatever this prints, it indicates that we have a brand new connnection!!
+                } else {
+                    System.out.println(p + " " + q + " are already connected");
+                }
             }
-        }
 
-        sc.close();
+    //sc.close();
+
     }
 }
