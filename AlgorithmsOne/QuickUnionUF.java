@@ -27,7 +27,7 @@ public class QuickUnionUF {
         return i;
     } //if no in list is not what we want, go to its parent till it goes to the root
 
-    public void union(int p, int q) {
+    public void Union(int p, int q) {
         int i = root(p);
         int j = root(q);
         id[i] = j;
@@ -38,7 +38,7 @@ public class QuickUnionUF {
 
             System.out.println("Enter No of Nos: ");
             int N = sc.nextInt();
-            QuickFindUF uf = new QuickFindUF(N);
+            QuickUnionUF uf = new QuickUnionUF(N);
 
             while (true) {
                 System.out.println("Enter first No to operate: ");
