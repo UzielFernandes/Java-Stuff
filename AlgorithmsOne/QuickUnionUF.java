@@ -3,6 +3,7 @@ for find the same thing check the index values
 for union, suppose 1 is connected to 2 and 2 to 3, AND 4 is connected to 5 and 5 to 6, then to connect 3 and 6 we actually
 connect 1 and 4 as from there it came*/
 
+import java.util.Scanner;
 
 public class QuickUnionUF {
     private int id[]; //private keyword to initialize id array
@@ -31,5 +32,29 @@ public class QuickUnionUF {
         int j = root(q);
         id[i] = j;
     } //to union, set the value of index of number to unionize to the ROOT of second value (i.e to from above, union(3,6) would mean root of 3 (1) will be made a child of root of 6(4))
-}
+
+    public static void main(String[] args) { //main method
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("Enter No of Nos: ");
+            int N = sc.nextInt();
+            QuickFindUF uf = new QuickFindUF(N);
+
+            while (true) {
+                System.out.println("Enter first No to operate: ");
+                int p = sc.nextInt();
+
+                System.out.println("Enter second No to operate: ");
+                int q = sc.nextInt();
+
+                if (!uf.Find(p, q)) { //check if already connected
+                    uf.Union(p, q); //if not connect em by calling that method
+                    System.out.println("connected elements: " + p + " " + q); //whatever this prints, it indicates that we have a brand new connnection!!
+                } else {
+                    System.out.println(p + " " + q + " are already connected");
+                }
+            }
+        }
+
+    }
 
