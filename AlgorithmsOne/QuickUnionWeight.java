@@ -22,6 +22,10 @@ public class QuickUnionWeight {
 
     private int root(int i) {
         while (i != id[i]) {
+            
+            //******PATH COMPRESSION LINE******
+            id[i] = id[id[i]]; 
+            //make all the nodes link directly to root
             i = id[i];
         }
         return i;
