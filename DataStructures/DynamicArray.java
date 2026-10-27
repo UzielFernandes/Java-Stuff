@@ -1,36 +1,35 @@
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class DynamicArray<T> implements Iterable<T> {
 
-    private T[] arr;
-    private int len = 0;
-    private int capacity;
+    private T[] arr; //initiate array
+    private int len = 0; //user thinks array size is this
+    private int capacity; //actual array size
 
-    public DynamicArray() {
+    public DynamicArray() { //default capacity (16)
         this(16);
     }
 
-    @SuppressWarnings("unchecked")
-    public DynamicArray(int capacity) {
+    @SuppressWarnings("unchecked") //Not Necessary but asks Java to suppress any warning messages implying unchecked scenarios
+    public DynamicArray(int capacity) { //Literal capacity when we assign via DynamicArray<Integer> = new DynamicArray(so and so)
         if (capacity < 0) {
-            throw new IllegalArgumentException("Illegal Capacity: " + capacity);
+            throw new IllegalArgumentException("Illegal Capacity: " + capacity); //throw error if capacity is assigned to less than 0
         }
 
-        this.capacity = capacity;
-        arr = (T[]) new Object[capacity];
+        this.capacity = capacity; //assigining capacity
+        arr = (T[]) new Object[capacity]; //create array object
     }
 
-    public int size() {
+    public int size() { //return lenght of array
         return len;
     }
 
-    public boolean isEmpty() {
+    public boolean isEmpty() { //returns true if array empty
         return len == 0;
     }
 
-    private void checkIndex(int index) {
+    private void checkIndex(int index) { //to throw error if index doesnt exist
         if (index < 0 || index >= len) {
             throw new IndexOutOfBoundsException(
                 "Index: " + index + ", Size: " + len
@@ -38,17 +37,17 @@ public class DynamicArray<T> implements Iterable<T> {
         }
     }
 
-    public T get(int index) {
+    public T get(int index) { //check if suck indexexists and returns the value at said index
         checkIndex(index);
         return arr[index];
     }
 
-    public void set(int index, T elem) {
+    public void set(int index, T elem) { //set value at sent index
         checkIndex(index);
         arr[index] = elem;
     }
 
-    public void clear() {
+    public void clear() { //clear array
         for (int i = 0; i < len; i++) {
             arr[i] = null;
         }
@@ -56,8 +55,8 @@ public class DynamicArray<T> implements Iterable<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public void add(T elem) {
-        if (len == capacity) {
+    public void add(T elem) { //to add element
+        if (len == capacity) { //the dynamic array thing, if lenght = capacity append another list to it
             capacity = (capacity == 0) ? 1 : capacity * 2;
 
             T[] newArr = (T[]) new Object[capacity];
@@ -69,11 +68,11 @@ public class DynamicArray<T> implements Iterable<T> {
             arr = newArr;
         }
 
-        arr[len] = elem;
+        arr[len] = elem; //and this runs regardless
         len++;
     }
 
-    public T removeAt(int index) {
+    public T removeAt(int index) { //remove element at said index
         checkIndex(index);
 
         T removed = arr[index];
@@ -88,7 +87,7 @@ public class DynamicArray<T> implements Iterable<T> {
         return removed;
     }
 
-    public boolean remove(Object obj) {
+    public boolean remove(Object obj) { //remove given element
         int index = indexOf(obj);
 
         if (index == -1) {
@@ -99,9 +98,9 @@ public class DynamicArray<T> implements Iterable<T> {
         return true;
     }
 
-    public int indexOf(Object obj) {
+    public int indexOf(Object obj) { //return index of element
         for (int i = 0; i < len; i++) {
-            if (obj == null) {
+            if (obj == null) { //if object is null then that case is also done here
                 if (arr[i] == null) {
                     return i;
                 }
@@ -113,22 +112,22 @@ public class DynamicArray<T> implements Iterable<T> {
         return -1;
     }
 
-    public boolean contains(Object obj) {
+    public boolean contains(Object obj) { //to check if list merely contains an elemnt
         return indexOf(obj) != -1;
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<T> iterator() { //goes through the entire data struct
         return new Iterator<T>() {
-            private int index = 0;
+            private int index = 0; //position of index 
 
             @Override
-            public boolean hasNext() {
+            public boolean hasNext() { //as the name suggests.....
                 return index < len;
             }
 
             @Override
-            public T next() {
+            public T next() { //return the next thing
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
@@ -139,7 +138,7 @@ public class DynamicArray<T> implements Iterable<T> {
     }
 
     @Override
-    public String toString() {
+    public String toString() { //just display the array in a fancy way [10 , 20, 30]
         StringBuilder sb = new StringBuilder("[ ");
 
         for (int i = 0; i < len; i++) {
